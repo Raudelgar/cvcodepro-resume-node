@@ -10,6 +10,27 @@ const getTime = () => {
 	};
 };
 
+function generateUID() {
+	return (
+		Math.random().toString(36).substring(2, 15) +
+		Math.random().toString(36).substring(2, 15)
+	);
+}
+
+function generateTimestampFromStringDate(str) {
+	return new Date(str).getTime();
+}
+
+function getDateFromTimestamp(time) {
+	return {
+		month: new Date(time).getDate(),
+		year: new Date(time).getFullYear(),
+	};
+}
+
 module.exports = {
 	getTime,
+	generateUID,
+	generateTimestampFromStringDate,
+	getDateFromTimestamp,
 };
