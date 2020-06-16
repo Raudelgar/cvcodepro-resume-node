@@ -11,11 +11,7 @@ const mockUser = require('./utils/_data.js');
 const { generateUID } = require('./utils/helper.js');
 
 //Initializing Firebase Admin SDK
-// admin.initializeApp(config);
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
-	databaseURL: 'https://cvcodepro-resume-node-9432d.firebaseio.com',
-});
+admin.initializeApp(config);
 const db = admin.firestore();
 
 //MIddlewares
@@ -30,12 +26,10 @@ cvrApp.use('/messages', messagesRoute);
 //GET - /users?cvid=usersId
 //Access - Private
 cvrApp.get('/users', async (req, res) => {
+	const { cvid } = req.query;
 	try {
 		const usersRef = await db.collection('users');
-		const userRef = await usersRef.doc('6k9kkn80co7aiiaeutukw');
-
-		// const userInfoRef = userRef.collection('user_info');
-		// const userInfoDoc = await userInfoRef.doc('vnuDGVvKrkdMlFi5uc5C').get();
+		const userRef = await usersRef.doc(cvid);
 		const user = await userRef.get();
 
 		if (!user.exists) {
@@ -60,13 +54,11 @@ cvrApp.post('/create', async (req, res) => {
 	try {
 		const usersRef = await db.collection('users');
 		const userRef = await usersRef.doc(id).set(user);
-		// const idStore = await userRef.
 
 		res.send({ status: 200, payload: id });
 	} catch (error) {
 		res.send({ status: 500, payload: error });
 	}
-	// res.send({ id, user });
 });
 
 exports.cvrApp = functions.https.onRequest(cvrApp);
