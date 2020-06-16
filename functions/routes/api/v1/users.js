@@ -1,35 +1,50 @@
-// const admin = require('firebase-admin');
-// const functions = require('firebase-functions');
-// const { DB } = require('../../../admin/init.js');
 const express = require('express');
 const usersRoute = express.Router();
-const config = require('../../../config.js');
-const serviceAccount = require('../../../admin/serviceAccount.json');
-
-//Initializing Database
-// admin.initializeApp(config);
-// const db = admin.firestore();
+const init = require('../../../admin/init.js');
+const mockUser = require('../../../utils/_data.js');
+const { generateUID } = require('../../../utils/helper.js');
 
 //GET - /users?cvid=usersId
 //Access - Private
-usersRoute.get('/', (req, res) => {
-	console.log('calling /users');
-	// const userRef = db.collection('users').doc('vnuDGVvKrkdMlFi5uc5C');
-	// console.log('db connected');
-	// const getUserDoc = userRef
-	// 	.get()
-	// 	.then((doc) => {
-	// 		console.log('document', doc);
-	// 		if (!doc.exists) {
-	// 			res.send({ status: 404, payload: 'User Do Not Exist' });
-	// 		} else {
-	// 			res.send({ status: 200, payload: doc.data });
-	// 		}
-	// 	})
-	// 	.catch((err) => {
-	// 		res.send({ status: 500, payload: 'Error Fetching Data from Database' });
-	// 	});
-	res.send('From Users');
+usersRoute.get('/', async (req, res) => {
+	const { cvid } = req.query;
+	const initApp = init();
+	const { db } = initApp;
+	try {
+		const usersRef = await db.collection('users');
+		const userRef = await usersRef.doc(cvid);
+		const user = await userRef.get();
+
+		if (!user.exists) {
+			res.send({ status: 404, payload: 'User Do Not Exist' });
+		} else {
+			res.send({ status: 200, payload: { user: user.data() } });
+		}
+	} catch (error) {
+		res.send({ status: 500, payload: error });
+	}
+});
+
+//POST - /create-new-user
+//Access - Private
+usersRoute.post('/', async (req, res) => {
+	const initApp = init();
+	const { db } = initApp;
+	const id = generateUID();
+	const user = mockUser();
+	user.userInfo.id = id;
+	user.userSkills.id = id;
+	user.userExperience.id = id;
+	user.userEduction.id = id;
+
+	try {
+		const usersRef = await db.collection('users');
+		const userRef = await usersRef.doc(id).set(user);
+
+		res.send({ status: 200, payload: id });
+	} catch (error) {
+		res.send({ status: 500, payload: error });
+	}
 });
 
 module.exports = usersRoute;
