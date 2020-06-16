@@ -4,6 +4,7 @@
 	"scripts": {
 		"lint": "eslint .",
 		"serve": "firebase emulators:start --only functions",
+		"emulators": "firebase emulators:start",
 		"shell": "firebase functions:shell",
 		"start": "npm run shell",
 		"deploy": "npm run env && firebase deploy --only functions",
@@ -23,6 +24,7 @@
 		"firebase-functions": "^3.6.1",
 		"jsonwebtoken": "^8.5.1",
 		"nodemailer": "^6.4.8",
+		"uuid": "^8.1.0",
 		"xoauth2": "^1.2.0"
 	},
 	"devDependencies": {
