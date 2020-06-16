@@ -7,4 +7,4 @@ env.js
 utils/_data.js
 
 #Admin SDK CRED
-admin/*
+admin/*.json
