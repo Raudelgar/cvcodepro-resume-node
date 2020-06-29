@@ -11,7 +11,7 @@ cvrApp.use(express.json({ limit: '50mb' }));
 cvrApp.use(cors());
 
 //Routes
-cvrApp.use('/messages', messagesRoute);
+cvrApp.use('/new-messages', messagesRoute);
 cvrApp.use('/users', usersRoute);
 cvrApp.use('/create-new-user', usersRoute);
 
