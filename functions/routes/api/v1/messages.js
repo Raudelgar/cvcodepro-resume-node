@@ -36,6 +36,7 @@ messagesRoute.post('/', async (req, res) => {
 				name: data.name,
 				company: data.company,
 				email: data.from,
+				subject: data.subject,
 				content: data.content,
 			});
 			if (len > 10) {
