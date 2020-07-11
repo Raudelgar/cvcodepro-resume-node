@@ -25,9 +25,9 @@ usersRoute.get('/', async (req, res) => {
 	}
 });
 
-//POST - /create-new-user
+//POST - /users/new
 //Access - Private
-usersRoute.post('/', async (req, res) => {
+usersRoute.post('/new', async (req, res) => {
 	const initApp = init();
 	const { db } = initApp;
 	const id = generateUID();
@@ -42,6 +42,30 @@ usersRoute.post('/', async (req, res) => {
 		const userRef = await usersRef.doc(id).set(user);
 
 		res.send({ status: 200, payload: id });
+	} catch (error) {
+		res.send({ status: 500, payload: error });
+	}
+});
+
+//POST - /users/update
+//Access - Private
+usersRoute.post('/update', async (req, res) => {
+	const initApp = init();
+	const { db } = initApp;
+	const { cvid } = req.query;
+	const data = req.body;
+
+	try {
+		const usersRef = await db.collection('users');
+		const userRef = await usersRef.doc(cvid);
+		const user = await (await userRef.get()).data();
+
+		for (let key of Object.keys(data)) {
+			user[key] = data[key];
+			user[key].id = cvid;
+		}
+		const response = await userRef.update(user);
+		res.send({ status: 200, payload: user });
 	} catch (error) {
 		res.send({ status: 500, payload: error });
 	}

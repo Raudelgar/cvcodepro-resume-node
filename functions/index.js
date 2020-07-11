@@ -14,7 +14,8 @@ cvrApp.use(cors());
 //Routes
 cvrApp.use('/new-messages', messagesRoute);
 cvrApp.use('/users', usersRoute);
-cvrApp.use('/create-new-user', usersRoute);
+// cvrApp.use('/create-new-user', usersRoute);
+// cvrApp.use('/update-user', usersRoute);
 cvrApp.use('/contact', contactRoute);
 
 exports.cvrApp = functions.https.onRequest(cvrApp);
