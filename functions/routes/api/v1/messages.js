@@ -21,6 +21,7 @@ messagesRoute.post('/', async (req, res) => {
 			email: data.from,
 			subject: data.subject,
 			content: data.content,
+			id: cvid,
 		};
 		const msgCollection = await docRef.get();
 
