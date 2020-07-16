@@ -1,7 +1,7 @@
 node_modules/
 
 #ENV
-env.js
+utils/env.js
 
 #Mock Data
 utils/_data.js
