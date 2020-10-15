@@ -36,6 +36,7 @@ usersRoute.post('/new', async (req, res) => {
 	user.userSkills.id = id;
 	user.userExperience.id = id;
 	user.userEduction.id = id;
+	user.userProjects.id = id;
 
 	try {
 		const usersRef = await db.collection('users');
